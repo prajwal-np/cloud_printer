@@ -41,6 +41,7 @@ import Button from './ui/Button';
 import Wifi from './components/wifi';
 import Printer from './components/printer';
 import BackIcon from './components/backIcon';
+import RNPrinter from './libs/module';
 
 function CloudPrinter(): JSX.Element {
   const [currentView, setCurrentView] = useState('');
@@ -78,5 +79,5 @@ function CloudPrinter(): JSX.Element {
     </SafeAreaView>
   );
 }
-
+export const ReactPrinter = RNPrinter;
 export default CloudPrinter;
