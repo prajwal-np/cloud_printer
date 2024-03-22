@@ -1,7 +1,7 @@
 {
   "name": "react-native-seldio_kitchen_printer",
-  "version": "0.1.1",
-  "description": "kitchen p",
+  "version": "0.1.2",
+  "description": "kitchen printer for seldio",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",

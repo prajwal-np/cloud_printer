@@ -50,9 +50,8 @@ function CloudPrinter(): JSX.Element {
         <View
           style={{
             flexDirection: 'row',
+            justifyContent: 'center',
             gap: 100,
-            padding: '10%',
-            paddingBottom: 0,
           }}
         >
           <Button onPress={() => setCurrentView('wifi')} title="Add wifi" />
