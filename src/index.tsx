@@ -36,24 +36,35 @@
  */
 
 import React, { useState } from 'react';
-import { Pressable, SafeAreaView, View, Text } from 'react-native';
+import {
+  Pressable,
+  SafeAreaView,
+  View,
+  Text,
+  type ViewStyle,
+} from 'react-native';
 import Button from './ui/Button';
 import Wifi from './components/wifi';
 import Printer from './components/printer';
 import BackIcon from './components/backIcon';
 import RNPrinter from './libs/module';
-
-function CloudPrinter(): JSX.Element {
+type Props = {
+  containerStyle?: ViewStyle;
+};
+function CloudPrinter({ containerStyle }: Props): JSX.Element {
   const [currentView, setCurrentView] = useState('');
   return (
     <SafeAreaView>
       {!currentView && (
         <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            gap: 100,
-          }}
+          style={[
+            {
+              flexDirection: 'row',
+              justifyContent: 'center',
+              gap: 100,
+            },
+            containerStyle || {},
+          ]}
         >
           <Button onPress={() => setCurrentView('wifi')} title="Add wifi" />
           <Button
