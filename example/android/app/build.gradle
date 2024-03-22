@@ -108,7 +108,9 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
-
+implementation fileTree (dir:"libs",include:["*.jar","*.aar"])
+    implementation files('libs/externalprinterlibrary2-1.0.7-release.aar')
+    implementation files('libs/BluetoothBinding.aar')
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
     } else {

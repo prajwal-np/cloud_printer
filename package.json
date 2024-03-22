@@ -26,7 +26,7 @@
     "!**/.*"
   ],
   "scripts": {
-    "example": "yarn workspace react-native-seldio_kitchen_printer-example",
+    "example": "yarn workspace react-native-seldio_kitchen_printer-example start",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
@@ -78,7 +78,8 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-svg": "^15.1.0"
   },
   "workspaces": [
     "example"
@@ -156,5 +157,8 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "react-scripts": "^5.0.1"
   }
 }

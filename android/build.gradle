@@ -81,6 +81,8 @@ dependencies {
   // For < 0.71, this will be from the local maven repo
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
+  implementation files('libs/externalprinterlibrary2-1.0.7-release.aar')
+  implementation files('libs/BluetoothBinding.aar')
   implementation "com.facebook.react:react-native:+"
 }
 
