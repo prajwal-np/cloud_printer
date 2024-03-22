@@ -21,8 +21,6 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
-
 import com.sunmi.cloudprinter.bean.Router;
   import com.sunmi.externalprinterlibrary2.ConnectCallback;
 import com.sunmi.externalprinterlibrary2.ResultCallback;
@@ -42,16 +40,16 @@ public class Printer extends ReactContextBaseJavaModule implements  SearchCallba
 
   private final HashMap<String, Router> routerMap = new HashMap<>();
 
+  private String addedPrinter = "";
+
   Printer(ReactApplicationContext context){
     super(context);
     this.mContext = context;
     SharedPreferences sharedPreferences =mContext.getSharedPreferences("cloud_printer", Context.MODE_PRIVATE);
     String printerName = sharedPreferences.getString("printer_name","");
     if(!printerName.isEmpty()){
-      CloudPrinter printer = getCloudPrinter(printerName);
-      if(printer!=null) {
-        connect(printer);
-      }
+      this.search();
+      this.addedPrinter = printerName;
     }
   }
 
@@ -65,19 +63,27 @@ public class Printer extends ReactContextBaseJavaModule implements  SearchCallba
     this.mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit("printer_list", params.toString());
   }
 
+  public void search() {
+   try{
+     BluetoothManager bm = (BluetoothManager)mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+     if(bm.getAdapter().isEnabled()) {
+       try {
+         SunmiPrinterManager.getInstance().searchCloudPrinter(this.mContext, SearchMethod.BT, this);
+       } catch (SearchException e) {
+         e.printStackTrace();
+       }
+     } else {
+       SunmiPrinterManager.getInstance().searchCloudPrinter(this.mContext, SearchMethod.LAN, this);
+     }
+   } catch (Exception e){
+     e.printStackTrace();
+   }
+  }
+
   @ReactMethod()
   public void searchPrinter(Promise promise) {
     try {
-      BluetoothManager bm = (BluetoothManager)mContext.getSystemService(Context.BLUETOOTH_SERVICE);
-      if(bm.getAdapter().isEnabled()) {
-        try {
-          SunmiPrinterManager.getInstance().searchCloudPrinter(this.mContext, SearchMethod.BT, this);
-        } catch (SearchException e) {
-          e.printStackTrace();
-        }
-      } else {
-        SunmiPrinterManager.getInstance().searchCloudPrinter(this.mContext, SearchMethod.LAN, this);
-      }
+      search();
       promise.resolve(true);
     } catch (Exception e) {
       e.printStackTrace();
@@ -91,6 +97,9 @@ public class Printer extends ReactContextBaseJavaModule implements  SearchCallba
       cp.add(cloudPrinter);
       printerMap.put(cloudPrinter.getCloudPrinterInfo().name, cloudPrinter);
       sendEvent(cloudPrinter.getCloudPrinterInfo().name);
+      if(!addedPrinter.isEmpty() && addedPrinter.equals(cloudPrinter.getCloudPrinterInfo().name)){
+        connect(cloudPrinter);
+      }
     } catch (Exception e){
       Toast.makeText(mContext,"onFound error:"+ e.toString(), Toast.LENGTH_LONG).show();
     }
